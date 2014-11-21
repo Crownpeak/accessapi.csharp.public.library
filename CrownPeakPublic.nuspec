@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>CrownPeakPublic</id>
+    <version>$version$</version>
+	<title>CrownPeakPublic</title>
+    <authors>CrownPeak</authors>
+    <owners>CrownPeak</owners>
+	<description>A public project to help users make requests to Crownpeaks Access API</description>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <releaseNotes>Initial release of Nuget package.</releaseNotes>
+    <copyright>Copyright 2014</copyright>
+    <tags>CrownPeak AccessAPI</tags>
+  </metadata>
+</package>

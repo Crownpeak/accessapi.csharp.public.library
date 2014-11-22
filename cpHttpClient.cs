@@ -135,7 +135,7 @@ namespace CrownPeakPublic
           errors += Environment.NewLine + ex.InnerException.Message;
           ex = ex.InnerException;
         }
-        return Newtonsoft.Json.JsonConvert.SerializeObject(new { errorMessage = errors });
+        //return Newtonsoft.Json.JsonConvert.SerializeObject(new ResultClass { ResultCode = eResultCodes.conWS_GeneralError, ErrorMessage = errors });
       }
 
       // by calling .Result you are synchronously reading the result
@@ -147,7 +147,7 @@ namespace CrownPeakPublic
         {
           //TODO: add retry logic
         }
-        responseString = Newtonsoft.Json.JsonConvert.SerializeObject(new { ResultCode = Response.ReasonPhrase, InternalCode = (int)Response.StatusCode, errorMessage = responseString });
+        //responseString = Newtonsoft.Json.JsonConvert.SerializeObject(new ResultClass { ResultCode = eResultCodes.conWS_GeneralError, InternalCode = (int)Response.StatusCode, ErrorMessage = responseString });
       }
       return responseString;
     }

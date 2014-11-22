@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using CrownPeak.AccessAPI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,25 +18,25 @@ namespace CrownPeakPublic.AccessAPI
       Client = client;
     }
 
-    public JObject AuthenticateWithCache(JObject request)
+    public AuthAuthenticateWithCacheResponse AuthenticateWithCache(AuthAuthenticateWithCacheRequest request)
     {
-      return process("AuthenticateWithCache", request);
+      return process<AuthAuthenticateWithCacheResponse>("AuthenticateWithCache", request);
     }
 
-    public JObject Authenticate(JObject request)
+    public AuthAuthenticateResponse Authenticate(AuthAuthenticateRequest request)
     {
-      return process("Authenticate", request);
+      return process<AuthAuthenticateResponse>("Authenticate", request);
     }
 
-    public JObject Logout()
+    public AuthLogoutResponse Logout()
     {
-      return process("Logout", new JObject());
+      return process<AuthLogoutResponse>("Logout", string.Empty);
     }
 
-    private JObject process(string action, JObject postData)
+    private TResponse process<TResponse>(string action, object postData)
     {
       Client.SetupAccessRequest("Auth", action, Newtonsoft.Json.JsonConvert.SerializeObject(postData).ToString());
-      return JObject.Parse(Client.CaptureToJsonString());
+      return Newtonsoft.Json.JsonConvert.DeserializeObject<TResponse>(Client.CaptureToJsonString());
     }
   }
 }

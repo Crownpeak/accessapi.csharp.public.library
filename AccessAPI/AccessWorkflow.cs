@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using CrownPeak.AccessAPI;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,20 +19,20 @@ namespace CrownPeakPublic.AccessAPI
       Client = client;
     }
 
-    public JObject Read()
+    public WorkflowGetResponse Read()
     {
-      return process("Read", new JObject());
+      return process<WorkflowGetResponse>("Read", string.Empty);
     }
 
-    public JObject Read(int id)
+    public WorkflowGetByIdResponse Read(int id)
     {
-      return process("Read/" + id.ToString(), new JObject());
+      return process<WorkflowGetByIdResponse>("Read/" + id.ToString(), string.Empty);
     }
 
-    private JObject process(string action, JObject postData)
+    private TResponse process<TResponse>(string action, object postData)
     {
       Client.SetupAccessRequest("Workflow", action, Newtonsoft.Json.JsonConvert.SerializeObject(postData).ToString());
-      return JObject.Parse(Client.CaptureToJsonString());
+      return Newtonsoft.Json.JsonConvert.DeserializeObject<TResponse>(Client.CaptureToJsonString());
     }
   }
 }

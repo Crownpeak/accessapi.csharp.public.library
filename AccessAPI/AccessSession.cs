@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using CrownPeak.AccessAPI;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -88,8 +89,8 @@ namespace CrownPeakPublic.AccessAPI
       }
     }
 
-    private JObject _Cache;
-    public JObject Cache
+    private AuthAuthenticateWithCacheResponse _Cache;
+    public AuthAuthenticateWithCacheResponse Cache
     {
       get
       {
@@ -145,19 +146,21 @@ namespace CrownPeakPublic.AccessAPI
 
     private void Authenticate(bool withCache)
     {
-      var request = new JObject();
-      request["instance"] = Instance;
-      request["password"] = Password;
-      request["remember_me"] = false;
-      request["timeZoneOffsetMinutes"] = (int)TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalMinutes;
-      request["username"] = Username;
-
+      
       if (withCache)
       {
-        var authResponse = authController.AuthenticateWithCache(request);
-        if (!authResponse.IsSuccessful())
+        var request = new AuthAuthenticateWithCacheRequest
         {
-          throw new Exception("Failed to AuthenticateWithCache: " + authResponse["errorMessage"].ToString());
+          instance = Instance,
+          password = Password,
+          remember_me = false,
+          timeZoneOffsetMinutes = (int)TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalMinutes,
+          username = Username,
+        };
+        var authResponse = authController.AuthenticateWithCache(request);
+        if (authResponse != null && authResponse.ResultCode == eResultCodes.conWS_Success)
+        {
+          throw new Exception("Failed to AuthenticateWithCache: " + authResponse == null ? "" : authResponse.ErrorMessage.ToString());
         }
         else
         {
@@ -166,10 +169,18 @@ namespace CrownPeakPublic.AccessAPI
       }
       else
       {
-        var authResponse = authController.Authenticate(request);
-        if (!authResponse.IsSuccessful())
+        var request = new AuthAuthenticateRequest
         {
-          throw new Exception("Failed to Authenticate: " + authResponse["errorMessage"].ToString());
+          instance = Instance,
+          password = Password,
+          remember_me = false,
+          timeZoneOffsetMinutes = (int)TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).TotalMinutes,
+          username = Username,
+        };
+        var authResponse = authController.Authenticate(request);
+        if (authResponse != null && authResponse.ResultCode == eResultCodes.conWS_Success)
+        {
+          throw new Exception("Failed to Authenticate: " + authResponse == null ? "" : authResponse.ErrorMessage.ToString());
         }
       }
     }
@@ -183,9 +194,9 @@ namespace CrownPeakPublic.AccessAPI
     private void Logout()
     {
       var logoutResponse = authController.Logout();
-      if (!logoutResponse.IsSuccessful())
+      if (logoutResponse != null && logoutResponse.ResultCode == eResultCodes.conWS_Success)
       {
-        throw new Exception("Failed to Logout: " + logoutResponse["errorMessage"].ToString());
+        throw new Exception("Failed to Logout: " + logoutResponse == null ? "" : logoutResponse.ErrorMessage.ToString());
       }
     }
   }

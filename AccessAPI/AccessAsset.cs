@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using CrownPeak.AccessAPI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,80 +18,80 @@ namespace CrownPeakPublic.AccessAPI
       Client = client;
     }
 
-    public JObject Read(int id)
+    public AssetGetByIdResponse Read(int id)
     {
-      return process("Read/" + id.ToString(), new JObject());
+      return process<AssetGetByIdResponse>("Read/" + id.ToString(), string.Empty);
     }
 
-    public JObject Paged(JObject request)
+    public AssetPagedResponse Paged(AssetPagedRequest request)
     {
-      return process("Paged", request);
+      return process<AssetPagedResponse>("Paged", request);
     }
 
-    public JObject Create(JObject request)
+    public AssetPostResponse Create(AssetPostRequest request)
     {
-      return process("Create", request);
+      return process<AssetPostResponse>("Create", request);
     }
 
-    public JObject Update(JObject request)
+    public AssetPutResponse Update(AssetPutRequest request)
     {
-      return process("Update", request);
+      return process<AssetPutResponse>("Update", request);
     }
 
-    public JObject Delete(int id)
+    public AssetDeleteResponse Delete(int id)
     {
-      return process("Delete/" + id.ToString(), new JObject());
+      return process<AssetDeleteResponse>("Delete/" + id.ToString(), string.Empty);
     }
 
-    public JObject Undelete(int id)
+    public AssetUndeleteResponse Undelete(int id)
     {
-      return process("Undelete/" + id.ToString(), new JObject());
+      return process<AssetUndeleteResponse>("Undelete/" + id.ToString(), string.Empty);
     }
 
-    public JObject Rename(JObject request)
+    public AssetRenameResponse Rename(AssetRenameRequest request)
     {
-      return process("Rename", request);
+      return process<AssetRenameResponse>("Rename", request);
     }
 
-    public JObject Route(JObject request)
+    public AssetRouteResponse Route(AssetRouteRequest request)
     {
-      return process("Route", request);
+      return process<AssetRouteResponse>("Route", request);
     }
 
-    public JObject Branch(int id)
+    public AssetBranchResponse Branch(int id)
     {
-      return process("Branch/" + id.ToString(), new JObject());
+      return process<AssetBranchResponse>("Branch/" + id.ToString(), string.Empty);
     }
 
-    public JObject Fields(int id)
+    public AssetFieldsResponse Fields(int id)
     {
-      return process("Fields/" + id.ToString(), new JObject());
+      return process<AssetFieldsResponse>("Fields/" + id.ToString(), string.Empty);
     }
 
-    public JObject Upload(JObject request)
+    public AssetUploadResponse Upload(AssetUploadRequest request)
     {
-      return process("Upload", request);
+      return process<AssetUploadResponse>("Upload", request);
     }
 
-    public JObject Attach(JObject request)
+    public AssetAttachResponse Attach(AssetAttachRequest request)
     {
-      return process("Attach", request);
+      return process<AssetAttachResponse>("Attach", request);
     }
 
-    public JObject ExecuteWorkflowCommand(JObject request)
+    public AssetExecuteWorkflowCommandResponse ExecuteWorkflowCommand(AssetExecuteWorkflowCommandRequest request)
     {
-      return process("ExecuteWorkflowCommand", request);
+      return process<AssetExecuteWorkflowCommandResponse>("ExecuteWorkflowCommand", request);
     }
 
-    public JObject Exists(JObject request)
+    public AssetExistsResponse Exists(AssetExistsRequest request)
     {
-      return process("Exists", request);
+      return process<AssetExistsResponse>("Exists", request);
     }
 
-    private JObject process(string action, JObject postData)
+    private TResponse process<TResponse>(string action, object postData)
     {
       Client.SetupAccessRequest("Asset", action, Newtonsoft.Json.JsonConvert.SerializeObject(postData).ToString());
-      return JObject.Parse(Client.CaptureToJsonString());
+      return Newtonsoft.Json.JsonConvert.DeserializeObject<TResponse>(Client.CaptureToJsonString());
     }
   }
 }

@@ -19,14 +19,14 @@ namespace CrownPeakPublic.AccessAPI
       Client = client;
     }
 
-    public WorkflowGetResponse Read()
+    public WorkflowReadResponse Read()
     {
-      return process<WorkflowGetResponse>("Read", string.Empty);
+      return process<WorkflowReadResponse>("Read", string.Empty);
     }
 
-    public WorkflowGetByIdResponse Read(int id)
+    public WorkflowReadByIdResponse Read(int id)
     {
-      return process<WorkflowGetByIdResponse>("Read/" + id.ToString(), string.Empty);
+      return process<WorkflowReadByIdResponse>("Read/" + id.ToString(), string.Empty);
     }
 
     private TResponse process<TResponse>(string action, object postData)

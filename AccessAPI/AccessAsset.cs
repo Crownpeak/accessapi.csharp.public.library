@@ -18,9 +18,9 @@ namespace CrownPeakPublic.AccessAPI
       Client = client;
     }
 
-    public AssetGetByIdResponse Read(int id)
+    public AssetReadByIdResponse Read(int id)
     {
-      return process<AssetGetByIdResponse>("Read/" + id.ToString(), string.Empty);
+      return process<AssetReadByIdResponse>("Read/" + id.ToString(), string.Empty);
     }
 
     public AssetPagedResponse Paged(AssetPagedRequest request)
@@ -28,14 +28,19 @@ namespace CrownPeakPublic.AccessAPI
       return process<AssetPagedResponse>("Paged", request);
     }
 
-    public AssetPostResponse Create(AssetPostRequest request)
+    public AssetCreateResponse Create(AssetCreateRequest request)
     {
-      return process<AssetPostResponse>("Create", request);
+      return process<AssetCreateResponse>("Create", request);
     }
 
-    public AssetPutResponse Update(AssetPutRequest request)
+    public AssetCreateResponse Create(string newName, int destinationFolderId, AssetType type)
     {
-      return process<AssetPutResponse>("Update", request);
+      return process<AssetCreateResponse>("Create", new AssetCreateRequest(newName, destinationFolderId, type));
+    }
+
+    public AssetUpdateResponse Update(AssetUpdateRequest request)
+    {
+      return process<AssetUpdateResponse>("Update", request);
     }
 
     public AssetDeleteResponse Delete(int id)

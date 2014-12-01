@@ -1,4 +1,5 @@
-﻿using CrownPeakPublic.AccessAPI;
+﻿using CrownPeak.AccessAPI;
+using CrownPeakPublic.AccessAPI;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace CrownPeakPublic
     /// <param name="secret"></param>
     public cpHttpClient(string server, string instance, string key, string secret = "")
     {
-      Server = server;
+      Server = CleanupServer(server);
       Instance = instance;
       Key = key;
       Secret = secret;
@@ -44,9 +45,17 @@ namespace CrownPeakPublic
 
     public void SetupAccessRequest(string controller, string action, string postData = "", string postDataMediaType = "application/json", string accept = "application/json")
     {
-      uri = new Uri(string.Format(@"https://{0}/{1}/cpt_webservice/accessapi/{2}/{3}", Server, Instance, controller, action));
+      uri = new Uri(string.Format(@"{0}/{1}/cpt_webservice/accessapi/{2}/{3}", Server, Instance, controller, action));
       SetPostData(postData, Encoding.UTF8, postDataMediaType);
       AddAccessAPIHeaders(accept);
+    }
+
+    private string CleanupServer(string server)
+    {
+      if (string.IsNullOrWhiteSpace(server)) return string.Empty;
+      if (!server.StartsWith("http", StringComparison.OrdinalIgnoreCase)) server = "https://" + server;
+      var uri = new Uri(server);
+      return uri.ToString();
     }
 
     //set uri and post data before calling this method with signature auth enabled
@@ -135,7 +144,7 @@ namespace CrownPeakPublic
           errors += Environment.NewLine + ex.InnerException.Message;
           ex = ex.InnerException;
         }
-        //return Newtonsoft.Json.JsonConvert.SerializeObject(new ResultClass { ResultCode = eResultCodes.conWS_GeneralError, ErrorMessage = errors });
+        return Newtonsoft.Json.JsonConvert.SerializeObject(new ResultClass { ResultCode = eResultCodes.conWS_GeneralError, ErrorMessage = errors });
       }
 
       // by calling .Result you are synchronously reading the result
@@ -147,7 +156,7 @@ namespace CrownPeakPublic
         {
           //TODO: add retry logic
         }
-        //responseString = Newtonsoft.Json.JsonConvert.SerializeObject(new ResultClass { ResultCode = eResultCodes.conWS_GeneralError, InternalCode = (int)Response.StatusCode, ErrorMessage = responseString });
+        responseString = Newtonsoft.Json.JsonConvert.SerializeObject(new ResultClass { ResultCode = eResultCodes.conWS_GeneralError, InternalCode = (int)Response.StatusCode, ErrorMessage = responseString });
       }
       return responseString;
     }

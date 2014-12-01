@@ -158,7 +158,7 @@ namespace CrownPeakPublic.AccessAPI
           username = Username,
         };
         var authResponse = authController.AuthenticateWithCache(request);
-        if (authResponse != null && authResponse.ResultCode == eResultCodes.conWS_Success)
+        if (authResponse == null || authResponse.ResultCode != eResultCodes.conWS_Success)
         {
           throw new Exception("Failed to AuthenticateWithCache: " + authResponse == null ? "" : authResponse.ErrorMessage.ToString());
         }
@@ -178,7 +178,7 @@ namespace CrownPeakPublic.AccessAPI
           username = Username,
         };
         var authResponse = authController.Authenticate(request);
-        if (authResponse != null && authResponse.ResultCode == eResultCodes.conWS_Success)
+        if (authResponse == null || authResponse.ResultCode != eResultCodes.conWS_Success)
         {
           throw new Exception("Failed to Authenticate: " + authResponse == null ? "" : authResponse.ErrorMessage.ToString());
         }

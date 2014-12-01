@@ -284,7 +284,8 @@ namespace CrownPeak.AccessAPI {
 
         public ResultClass()
         {
-          ErrorMessage = "";
+          ErrorMessage = string.Empty;
+          this.ResultCode = eResultCodes.conWS_NotSet;
         }
 
         private string ErrorMessageField;

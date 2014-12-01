@@ -33,9 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\..\..\..\Inetpub\wwwroot\advantage\cpt_webservice\App_Code\AccessAPI\AccessAPITypes.cs">
-      <Link>AccessAPI\AccessAPITypes.cs</Link>
-    </Compile>
+    <Compile Include="AccessAPI\AccessAPIPartialTypes.cs" />
+    <Compile Include="AccessAPI\AccessAPITypes.cs" />
     <Compile Include="AccessAPI\AccessSession.cs" />
     <Compile Include="AccessAPI\AccessAsset.cs" />
     <Compile Include="AccessAPI\AccessAuth.cs" />

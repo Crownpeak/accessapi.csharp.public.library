@@ -67,7 +67,7 @@ namespace CrownPeak.AccessAPI
 #else
     public cpAssetVisibilityType visibilityType;
 #endif
-    
+
     [DataMember]
     public bool ignoreFilter;
 
@@ -115,6 +115,8 @@ namespace CrownPeak.AccessAPI
     public int modelId;
     [DataMember]
     public int type;
+    [DataMember]
+    public int subtype;
     [DataMember]
     public int devTemplateLanguage;
     [DataMember]
@@ -330,7 +332,7 @@ namespace CrownPeak.AccessAPI
     public AssetAttachResponse() { }
 
     public AssetAttachResponse(ResultClass result, string displayUrl)
-      : base(result) 
+      : base(result)
     {
       this.displayUrl = displayUrl;
     }
@@ -505,7 +507,7 @@ namespace CrownPeak.AccessAPI
       : base(result) {}
   }
   #endregion
-  
+
   #region AuthAuthenticateWithCache
   [DataContract]
   public partial class AuthAuthenticateWithCacheRequest
